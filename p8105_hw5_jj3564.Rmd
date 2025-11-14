@@ -108,7 +108,7 @@ ggplot(power_df, aes(mu, power)) +
   geom_line(color = "#7B4397", linewidth = 1.1) +
   geom_point(color = "#7B4397") +
   labs(
-    title = "Power increases with effect size",
+    title = "Power increases with true μ",
     x = "True mean (μ)",
     y = "Power"
   )
@@ -130,6 +130,10 @@ power_df %>%
     color = NULL
   )
 ```
+###interpretation:As the true mean increases, the power of the test rises steadily from about 5% to nearly 100%. Larger effect sizes make it easier to reject the null hypothesis.
+###From the second plot, the average estimated mean (μ̂) among samples where the null was rejected differs from the true μ, particularly when the effect size is small. For smaller true means, the line representing significant samples lies above both the overall average and the true μ, indicating a positive bias in the subset of significant results.
+###This bias arises because conditioning on rejection introduces selection bias: when μ is small, only samples with unusually large sample means (those far above the true μ) achieve p-values below 0.05. These overestimates dominate the rejected group, inflating the average μ̂.As μ grows larger, power approaches one—most samples become significant—so the selection bias diminishes. The two lines then converge, and both averages approach the true μ.
+
 
 
 
