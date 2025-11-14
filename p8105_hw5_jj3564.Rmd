@@ -1,0 +1,61 @@
+---
+title: "p8105_hw5_jj3564"
+author: "Kate"
+date: "2025-11-14"
+output: github_document
+---
+```{r setup, include = FALSE} 
+library(tidyverse) 
+library(broom) 
+set.seed(1)
+```
+## problem 1
+```{r}
+# Define a function that checks if at least two people share a birthday
+dup_bday <- function(n) {
+  # Randomly assign birthdays (1–365) to n people, allowing duplicates
+  bdays <- sample(1:365, n, replace = TRUE)
+  # Return TRUE if there is any duplicate birthday, FALSE otherwise
+  any(duplicated(bdays))
+}
+
+# Define a function to estimate the probability of shared birthdays
+prob_bday <- function(n, sims = 1e4) {
+  # Repeat the birthday simulation 'sims' times
+  # Each run returns TRUE/FALSE; taking the mean gives the estimated probability
+  mean(replicate(sims, dup_bday(n)))
+}
+
+# Create a tibble with group sizes from 2 to 50
+# For each group size, compute the probability using 'prob_bday'
+results <- tibble(
+  n = 2:50,
+  prob = map_dbl(n, prob_bday)
+)
+
+# Plot the probability curve using ggplot2
+ggplot(results, aes(x = n, y = prob)) +
+  geom_line(linewidth = 1.1) +  # Draw line
+  geom_point() +                  # Add data points
+  scale_y_continuous(labels = scales::percent) +   # Convert y-axis to %
+  labs(
+    title = "Probability that at least two people share a birthday",
+    x = "Group size",
+    y = "Probability"
+  )
+# Result Interpretation:
+# 
+# The resulting plot visualizes the "Birthday Paradox" — 
+# how the probability that at least two people share the same birthday 
+# increases with group size.
+# 
+# The curve starts near 0% when only 2–5 people are in the group, 
+# but rises rapidly as the group becomes larger. 
+# Around 23 people, the probability exceeds 50%,
+# Around 50 people, the probablity is next to 100%
+# showing that even in a relatively small group, 
+# there is a surprisingly high chance that two people share a birthday.
+# 
+# This counterintuitive result illustrates how random combinations 
+# grow quickly with group size, a classic example of probability paradoxes.
+```
