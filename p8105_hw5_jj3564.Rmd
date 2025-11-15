@@ -174,24 +174,25 @@ city_results <- city_stats %>%
 
 #  4. Plot unsolved homicide proportions 
 city_results %>%
-  arrange(desc(estimate)) %>%
+  arrange(estimate) %>%
   mutate(city_state = fct_reorder(city_state, estimate)) %>%
-  ggplot(aes(estimate, city_state)) +
-  geom_point(color = "#8E44AD", size = 2.2) +
-  geom_errorbar(aes(xmin = conf.low, xmax = conf.high), color = "#8E44AD", width = 0.15) +
+  ggplot(aes(y = city_state, x = estimate)) +
+  geom_point(color = "#2A9D8F", size = 2.3) +
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), color = "#2A9D8F", height = 0.2) +
   labs(
-    title = "Unsolved Homicide Proportions by City",
-    subtitle = "Each point represents an estimated proportion (95% CI)",
-    x = "Estimated Proportion of Unsolved Cases",
+    title = "Proportion of Unsolved Homicides by City",
+    subtitle = "Each point shows the estimated proportion (95% CI)",
+    x = "Estimated proportion (95% Confidence Interval)",
     y = NULL
   ) +
-  theme_light(base_size = 13) +
-  theme(
-    plot.title = element_text(face = "bold", color = "#4A235A"),
-    plot.subtitle = element_text(size = 11, color = "gray30"),
-    panel.grid.minor = element_blank()
-  ) +
-  coord_flip()
+  theme_minimal(base_size = 11) +
+theme(
+  axis.text.y = element_text(size = 5, family = "sans"),
+  axis.text.x = element_text(size = 9),
+  panel.grid.minor = element_blank(),
+  plot.margin = margin(10, 20, 10, 20)
+)
+
 ```
 
 
